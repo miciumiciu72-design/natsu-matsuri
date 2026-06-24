@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>夏祭り 出席管理</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;background:#f5f4f0;min-height:100vh;font-size:14px;color:#1a1a18}
+.app{max-width:480px;margin:0 auto;padding:0 0 64px}
+
+/* ヘッダー */
+.hdr{background:#fff;border-bottom:1px solid #e0ddd5;padding:12px 16px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:10}
+.hdr h1{font-size:15px;font-weight:500;color:#1a1a18;flex:1}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;transition:background .3s}
+.sync-dot.ok{background:#1d9e75}
+.sync-dot.err{background:#d85a30}
+.sync-dot.loading{background:#f0c040;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.today-badge{font-size:12px;color:#5f5e5a;background:#f1efe8;padding:4px 10px;border-radius:8px;font-weight:400}
+
+/* タブ */
+.tabs{display:flex;background:#fff;border-bottom:1px solid #e0ddd5;position:sticky;top:49px;z-index:9}
+.tab{flex:1;height:44px;font-size:13px;font-weight:400;border:none;background:transparent;color:#888780;cursor:pointer;border-bottom:2px solid transparent;font-family:inherit}
+.tab.active{color:#1a1a18;border-bottom:2px solid #1a1a18;font-weight:500}
+
+.content{padding:12px 16px}
+
+/* 統計 */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat{background:#fff;border-radius:10px;padding:12px 8px;text-align:center;border:1px solid #e0ddd5}
+.stat .num{font-size:24px;font-weight:500}
+.stat .lbl{font-size:12px;color:#888780;margin-top:2px;font-weight:400}
+.stat.s-present .num{color:#0f6e56}
+.stat.s-early .num{color:#993c1d}
+.stat.s-here .num{color:#185fa5}
+
+/* イベント選択 */
+.ev-scroll{overflow-x:auto;display:flex;gap:6px;margin-bottom:12px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.ev-scroll::-webkit-scrollbar{display:none}
+.ev-btn{white-space:nowrap;padding:5px 10px;font-size:12px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#f1efe8;color:#5f5e5a;cursor:pointer;flex-shrink:0;font-family:inherit;line-height:1.4;text-align:center}
+.ev-btn.active{background:#185fa5;border-color:#185fa5;color:#fff;font-weight:500}
+
+/* 検索 */
+.search-row{display:flex;gap:8px;margin-bottom:10px}
+.search-row input{flex:1;height:40px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 12px;font-family:inherit}
+.search-row select{height:40px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
+
+/* 出席カード */
+.person-list{display:flex;flex-direction:column;gap:6px}
+.pcard{background:#fff;border:1px solid #e0ddd5;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;border-left:3px solid #e0ddd5;transition:opacity .2s}
+.pcard.st-present{border-left-color:#1d9e75}
+.pcard.st-early{border-left-color:#d85a30;opacity:0.8}
+.pcard-num{font-size:12px;font-weight:400;color:#b4b2a9;width:22px;flex-shrink:0;text-align:right}
+.pcard-info{flex:1;min-width:0}
+.pcard-name{font-size:14px;font-weight:400;color:#1a1a18}
+.pcard-kana{font-size:11px;font-weight:400;color:#888780;margin-top:1px}
+.pcard-grade{font-size:11px;font-weight:400;color:#888780}
+.badge{font-size:11px;font-weight:400;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.badge-none{background:#f1efe8;color:#888780}
+.badge-present{background:#e1f5ee;color:#0f6e56}
+.badge-early{background:#faece7;color:#993c1d}
+.act-btns{display:flex;gap:4px;flex-shrink:0}
+.act-btn{height:32px;padding:0 10px;font-size:12px;font-weight:400;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;cursor:pointer;white-space:nowrap;font-family:inherit}
+.act-btn:active{transform:scale(0.95)}
+.act-btn.ap{background:#e1f5ee;border-color:#5dcaa5;color:#0f6e56}
+.act-btn.ae{background:#faece7;border-color:#f0997b;color:#993c1d}
+.act-btn.ar{background:#f1efe8;color:#888780;border-color:#d3d1c7}
+
+.empty{text-align:center;padding:40px 16px;color:#888780;font-size:13px;font-weight:400;line-height:1.8}
+
+/* 個人記録 */
+.dot-legend{display:flex;gap:14px;margin-bottom:10px;font-size:12px;font-weight:400;color:#888780}
+.dot-legend span{display:flex;align-items:center;gap:4px}
+.dot-samp{width:14px;height:14px;border-radius:3px;display:inline-block}
+.hcard{background:#fff;border:1px solid #e0ddd5;border-radius:10px;padding:12px;margin-bottom:8px}
+.hcard-name{font-size:13px;font-weight:500;color:#1a1a18;margin-bottom:2px}
+.hcard-sub{font-size:11px;font-weight:400;color:#888780;margin-bottom:8px}
+.hdots{display:flex;flex-wrap:wrap;gap:3px}
+.hdot{width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:400;flex-shrink:0}
+.hdot.p{background:#e1f5ee;color:#0f6e56}
+.hdot.e{background:#faece7;color:#993c1d}
+.hdot.n{background:#f1efe8;color:#b4b2a9}
+
+/* 名簿タブ */
+.sheet-row{display:flex;gap:8px;margin-bottom:10px;align-items:center}
+.sheet-row label{font-size:12px;font-weight:400;color:#5f5e5a;white-space:nowrap}
+.sheet-row select{flex:1;height:38px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
+.sheet-row button{height:38px;padding:0 14px;font-size:13px;font-weight:400;border:1px solid #185fa5;border-radius:8px;background:#185fa5;color:#fff;cursor:pointer;white-space:nowrap;font-family:inherit}
+.sheet-row button:active{opacity:.85}
+
+.import-area{border:2px dashed #d3d1c7;border-radius:10px;padding:18px;text-align:center;margin-bottom:10px;cursor:pointer;background:#fff}
+.import-area:active{border-color:#185fa5;background:#e6f1fb}
+.import-area .ic{font-size:32px;margin-bottom:6px}
+.import-area p{font-size:13px;font-weight:400;color:#5f5e5a}
+.import-area small{font-size:11px;font-weight:400;color:#888780}
+
+.btn-row{display:flex;gap:8px;margin-bottom:10px}
+.btn{height:38px;padding:0 14px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;flex:1}
+.btn:active{transform:scale(0.97)}
+.btn.danger{color:#a32d2d;border-color:#f09595;flex:none;padding:0 14px}
+
+.section-lbl{font-size:11px;font-weight:400;color:#888780;margin-bottom:6px;letter-spacing:.04em}
+
+/* 名簿カード */
+.mcard{background:#fff;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.mcard-num{font-size:12px;font-weight:400;color:#b4b2a9;width:22px;text-align:right;flex-shrink:0}
+.mcard-info{flex:1;min-width:0}
+.mcard-name{font-size:14px;font-weight:400;color:#1a1a18}
+.mcard-sub{font-size:11px;font-weight:400;color:#888780;margin-top:1px}
+.del-btn{width:30px;height:30px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#888780;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;font-family:inherit}
+.del-btn:active{background:#faece7;color:#993c1d}
+
+/* ステータスバー */
+.status-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0ddd5;padding:8px 16px;text-align:center;font-size:11px;font-weight:400;color:#888780;max-width:480px;margin:0 auto}
+
+/* モーダル */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%;max-width:480px}
+.modal h2{font-size:15px;font-weight:500;margin-bottom:14px;color:#1a1a18}
+.modal input{width:100%;height:44px;font-size:14px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;padding:0 12px;margin-bottom:10px;font-family:inherit;color:#1a1a18}
+.modal-btns{display:flex;gap:8px;margin-top:4px}
+.modal-btns button{flex:1;height:44px;border-radius:8px;border:1px solid #d3d1c7;font-size:14px;font-weight:400;cursor:pointer;font-family:inherit}
+.modal-btns .ok{background:#185fa5;color:#fff;border-color:#185fa5}
+.modal-btns .cancel{background:#fff;color:#888780}
+
+/* ローディング */
+.loading-screen{position:fixed;inset:0;background:#f5f4f0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:12px}
+.loading-screen p{font-size:14px;font-weight:400;color:#5f5e5a}
+.spinner{width:32px;height:32px;border:3px solid #e0ddd5;border-top-color:#185fa5;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- ローディング -->
+<div class="loading-screen" id="loading-screen">
+  <div class="spinner"></div>
+  <p>接続中...</p>
+</div>
+
+<div class="app" style="display:none" id="main-app">
+  <div class="hdr">
+    <h1>🏮 夏祭り 出席管理</h1>
+    <span class="sync-dot loading" id="sync-dot" title="同期状態"></span>
+    <span class="today-badge" id="today-lbl"></span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('attend')">出席入力</button>
+    <button class="tab" onclick="switchTab('history')">個人記録</button>
+    <button class="tab" onclick="switchTab('import')">名簿</button>
+  </div>
+
+  <!-- 出席入力 -->
+  <div class="content" id="tab-attend">
+    <div class="ev-scroll" id="ev-sel"></div>
+    <div class="stat-row">
+      <div class="stat s-present"><div class="num" id="s-p">0</div><div class="lbl">出席</div></div>
+      <div class="stat s-early"><div class="num" id="s-e">0</div><div class="lbl">早退</div></div>
+      <div class="stat s-here"><div class="num" id="s-h">0</div><div class="lbl">在席中</div></div>
+    </div>
+    <div class="search-row">
+      <input id="search" placeholder="名前・ふりがなで検索…" oninput="renderList()">
+      <select id="flt" onchange="renderList()">
+        <option value="">全員</option>
+        <option value="none">未記録</option>
+        <option value="present">出席</option>
+        <option value="early">早退</option>
+      </select>
+    </div>
+    <div class="person-list" id="plist"></div>
+  </div>
+
+  <!-- 個人記録 -->
+  <div class="content" id="tab-history" style="display:none">
+    <div class="dot-legend">
+      <span><span class="dot-samp" style="background:#e1f5ee"></span>出席</span>
+      <span><span class="dot-samp" style="background:#faece7"></span>早退</span>
+      <span><span class="dot-samp" style="background:#f1efe8"></span>未記録</span>
+    </div>
+    <div id="hlist"></div>
+  </div>
+
+  <!-- 名簿 -->
+  <div class="content" id="tab-import" style="display:none">
+    <div class="import-area" onclick="document.getElementById('file-in').click()">
+      <div class="ic">📊</div>
+      <p>Excelファイルをタップして読み込む</p>
+      <small>列順：番号・氏名・ふりがな・学年</small>
+    </div>
+    <input type="file" id="file-in" accept=".xlsx,.xls" style="display:none" onchange="onFileChosen(event)">
+
+    <div id="sheet-sel-area" style="display:none">
+      <div class="sheet-row">
+        <label>シート選択</label>
+        <select id="sheet-sel"></select>
+        <button onclick="importSheet()">読み込む</button>
+      </div>
+    </div>
+
+    <div id="import-msg" style="font-size:13px;font-weight:400;color:#5f5e5a;margin-bottom:10px;min-height:18px"></div>
+    <div class="btn-row">
+      <button class="btn" onclick="showAddModal()">＋ 手動追加</button>
+      <button class="btn danger" onclick="clearAll()">🗑 全削除</button>
+    </div>
+    <div class="section-lbl">登録済み（<span id="mcnt">0</span>名）</div>
+    <div id="mlist"></div>
+  </div>
+</div>
+
+<div class="status-bar" id="status-bar">接続中...</div>
+
+<!-- 手動追加モーダル -->
+<div class="modal-bg" id="modal" style="display:none" onclick="if(event.target===this)hideModal()">
+  <div class="modal">
+    <h2>メンバーを追加</h2>
+    <input id="m-num"   placeholder="番号（省略可）">
+    <input id="m-name"  placeholder="氏名（必須）">
+    <input id="m-kana"  placeholder="ふりがな（省略可）">
+    <input id="m-grade" placeholder="学年（省略可）">
+    <div class="modal-btns">
+      <button class="cancel" onclick="hideModal()">キャンセル</button>
+      <button class="ok" onclick="addManual()">追加</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import {
+  getFirestore, collection, doc,
+  onSnapshot, setDoc, deleteDoc, getDocs, writeBatch
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+// ===== Firebase設定 =====
+const firebaseConfig = {
+  apiKey: "AIzaSyAUOMbAuSVhrja7FadWqX6vjP-zoEaXJaQ",
+  authDomain: "natsu-matsuri-pjt.firebaseapp.com",
+  projectId: "natsu-matsuri-pjt",
+  storageBucket: "natsu-matsuri-pjt.firebasestorage.app",
+  messagingSenderId: "147743578543",
+  appId: "1:147743578543:web:0803a0e0a4340e25c7375a",
+  measurementId: "G-L50EZP9R6T"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ===== イベント定義 =====
+const EVENTS = (() => {
+  const list = [];
+  const start = new Date(2025,6,8), end = new Date(2025,6,20);
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) {
+    const mm = d.getMonth()+1, dd = d.getDate();
+    list.push({ id:`k${mm}${String(dd).padStart(2,'0')}`, label:`7/${dd}`, sub:'稽古' });
+  }
+  list.push({ id:'c0721',  label:'7/21',  sub:'衣装渡し' });
+  list.push({ id:'p0722e', label:'7/22夕', sub:'本番' });
+  list.push({ id:'p0723d', label:'7/23昼', sub:'本番' });
+  list.push({ id:'p0723e', label:'7/23夕', sub:'本番' });
+  return list;
+})();
+
+// ===== ローカル状態 =====
+let members    = [];   // {id, num, name, kana, grade}
+let attendance = {};   // {eventId: {memberId: 'present'|'early'}}
+let currentEvent = null;
+let loadedWb   = null;
+
+// ===== UI helpers =====
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function setStatus(msg, type='ok'){
+  const bar = document.getElementById('status-bar');
+  const dot = document.getElementById('sync-dot');
+  bar.textContent = msg;
+  dot.className = 'sync-dot ' + type;
+}
+function guessToday(){
+  const t = new Date();
+  const key = `k${t.getMonth()+1}${String(t.getDate()).padStart(2,'0')}`;
+  return EVENTS.find(e=>e.id===key) || EVENTS[0];
+}
+
+// ===== Firestore リアルタイム購読 =====
+// members コレクション
+onSnapshot(collection(db,'members'), snap => {
+  members = [];
+  snap.forEach(d => members.push({ id: d.id, ...d.data() }));
+  // 番号「男01」「女02」形式: 男→女→その他、各グループ内は番号順
+  function parseNum(num) {
+    const s = String(num||"").trim();
+    const grp = s.startsWith("男") ? 0 : s.startsWith("女") ? 1 : 9;
+    const n = parseInt(s.replace(/[^0-9]/g,""), 10);
+    return { grp, n: isNaN(n) ? 99999 : n };
+  }
+  members.sort((a, b) => {
+    const pa = parseNum(a.num), pb = parseNum(b.num);
+    if (pa.grp !== pb.grp) return pa.grp - pb.grp;
+    if (pa.n   !== pb.n)   return pa.n   - pb.n;
+    return (a.name||"").localeCompare(b.name||"", "ja");
+  });
+  renderList();
+  if(document.getElementById('tab-history').style.display !== 'none') renderHistory();
+  if(document.getElementById('tab-import').style.display  !== 'none') renderMembers();
+  setStatus('同期済み ✓', 'ok');
+}, err => {
+  setStatus('接続エラー', 'err');
+  console.error(err);
+});
+
+// attendance コレクション（各ドキュメントID = eventId, フィールド = {memberId: status}）
+onSnapshot(collection(db,'attendance'), snap => {
+  attendance = {};
+  snap.forEach(d => { attendance[d.id] = d.data(); });
+  updateStats();
+  renderList();
+  if(document.getElementById('tab-history').style.display !== 'none') renderHistory();
+  setStatus('同期済み ✓', 'ok');
+}, err => {
+  setStatus('接続エラー', 'err');
+});
+
+// ===== 出席操作 =====
+function getStatus(memberId){
+  return (attendance[currentEvent?.id] || {})[memberId] || null;
+}
+
+async function setAttendance(memberId, status){
+  if(!currentEvent) return;
+  setStatus('保存中...', 'loading');
+  try {
+    const ref = doc(db, 'attendance', currentEvent.id);
+    const cur = attendance[currentEvent.id] || {};
+    if(status === null){
+      const updated = { ...cur };
+      delete updated[memberId];
+      await setDoc(ref, updated);
+    } else {
+      await setDoc(ref, { ...cur, [memberId]: status });
+    }
+    setStatus('同期済み ✓', 'ok');
+  } catch(e){
+    setStatus('保存エラー', 'err');
+    alert('保存に失敗しました: ' + e.message);
+  }
+}
+
+function updateStats(){
+  if(!currentEvent){ ['s-p','s-e','s-h'].forEach(x=>document.getElementById(x).textContent='0'); return; }
+  const rec = attendance[currentEvent.id] || {};
+  let p=0,e=0;
+  Object.values(rec).forEach(v=>{ if(v==='present')p++; if(v==='early')e++; });
+  document.getElementById('s-p').textContent = p;
+  document.getElementById('s-e').textContent = e;
+  document.getElementById('s-h').textContent = p-e;
+}
+
+// ===== タブ =====
+window.switchTab = function(t){
+  ['attend','history','import'].forEach(x=>{
+    document.getElementById('tab-'+x).style.display = x===t?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach((b,i)=>{
+    b.classList.toggle('active',['attend','history','import'][i]===t);
+  });
+  if(t==='history') renderHistory();
+  if(t==='import')  renderMembers();
+};
+
+// ===== イベント選択 =====
+function buildEvSel(){
+  const c = document.getElementById('ev-sel');
+  c.innerHTML='';
+  EVENTS.forEach(ev=>{
+    const b=document.createElement('button');
+    b.className='ev-btn'+(currentEvent&&currentEvent.id===ev.id?' active':'');
+    b.innerHTML=`<div>${ev.label}</div><div style="font-size:10px;opacity:.75">${ev.sub}</div>`;
+    b.onclick=()=>{ currentEvent=ev; buildEvSel(); updateStats(); renderList(); };
+    c.appendChild(b);
+  });
+}
+
+// ===== 出席リスト =====
+function renderList(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const f = document.getElementById('flt').value;
+  const cont = document.getElementById('plist');
+  if(!members.length){ cont.innerHTML='<div class="empty">📋<br>名簿タブからメンバーを登録してください</div>'; return; }
+  if(!currentEvent){ cont.innerHTML='<div class="empty">上のボタンでイベントを選んでください</div>'; return; }
+  const list = members.filter(m=>{
+    if(q && !m.name.toLowerCase().includes(q) && !(m.kana||'').toLowerCase().includes(q) && !(m.num||'').includes(q)) return false;
+    const s=getStatus(m.id);
+    if(f==='none'&&s) return false;
+    if(f==='present'&&s!=='present') return false;
+    if(f==='early'&&s!=='early') return false;
+    return true;
+  });
+  if(!list.length){ cont.innerHTML='<div class="empty">該当者なし</div>'; return; }
+  cont.innerHTML='';
+  list.forEach(m=>{
+    const s=getStatus(m.id);
+    const div=document.createElement('div');
+    div.className='pcard'+(s?' st-'+s:'');
+    const badge=s==='present'?'<span class="badge badge-present">出席</span>'
+               :s==='early' ?'<span class="badge badge-early">早退</span>'
+                             :'<span class="badge badge-none">未</span>';
+    const cancelBtn=s?`<button class="act-btn ar" onclick="window._setAtt('${m.id}',null)">取消</button>`:'';
+    div.innerHTML=`
+      <div class="pcard-num">${esc(m.num)}</div>
+      <div class="pcard-info">
+        <div class="pcard-name">${esc(m.name)}</div>
+        ${m.kana?`<div class="pcard-kana">${esc(m.kana)}</div>`:''}
+        ${m.grade?`<div class="pcard-grade">${esc(m.grade)}</div>`:''}
+      </div>
+      ${badge}
+      <div class="act-btns">
+        <button class="act-btn${s==='present'?' ap':''}" onclick="window._setAtt('${m.id}','present')">出席</button>
+        <button class="act-btn${s==='early'?' ae':''}" onclick="window._setAtt('${m.id}','early')">早退</button>
+        ${cancelBtn}
+      </div>`;
+    cont.appendChild(div);
+  });
+}
+window._setAtt = setAttendance;
+
+// ===== 個人記録 =====
+function renderHistory(){
+  const cont=document.getElementById('hlist');
+  if(!members.length){ cont.innerHTML='<div class="empty">メンバーがいません</div>'; return; }
+  cont.innerHTML='';
+  members.forEach(m=>{
+    const div=document.createElement('div');
+    div.className='hcard';
+    let dots='';
+    EVENTS.forEach(ev=>{
+      const s=(attendance[ev.id]||{})[m.id];
+      const cls=s==='present'?'p':s==='early'?'e':'n';
+      const txt=s==='present'?'出':s==='early'?'退':'';
+      dots+=`<div class="hdot ${cls}" title="${ev.label} ${ev.sub}">${txt}</div>`;
+    });
+    const sub=[m.num?`No.${m.num}`:'', m.kana||'', m.grade||''].filter(Boolean).join('　');
+    div.innerHTML=`
+      <div class="hcard-name">${esc(m.name)}</div>
+      ${sub?`<div class="hcard-sub">${esc(sub)}</div>`:''}
+      <div class="hdots">${dots}</div>`;
+    cont.appendChild(div);
+  });
+}
+
+// ===== 名簿 =====
+function renderMembers(){
+  document.getElementById('mcnt').textContent=members.length;
+  const cont=document.getElementById('mlist');
+  if(!members.length){ cont.innerHTML='<div class="empty" style="padding:20px 0">まだ登録がありません</div>'; return; }
+  cont.innerHTML='';
+  members.forEach(m=>{
+    const div=document.createElement('div');
+    div.className='mcard';
+    const sub=[m.kana||'',m.grade||''].filter(Boolean).join('　');
+    div.innerHTML=`
+      <div class="mcard-num">${esc(m.num)}</div>
+      <div class="mcard-info">
+        <div class="mcard-name">${esc(m.name)}</div>
+        ${sub?`<div class="mcard-sub">${esc(sub)}</div>`:''}
+      </div>
+      <button class="del-btn" onclick="window._delMember('${m.id}','${esc(m.name)}')" title="削除">×</button>`;
+    cont.appendChild(div);
+  });
+}
+
+// ===== Excelファイル選択 =====
+window.onFileChosen = function(evt){
+  const file=evt.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      loadedWb=XLSX.read(e.target.result,{type:'binary'});
+      const sel=document.getElementById('sheet-sel');
+      sel.innerHTML='';
+      loadedWb.SheetNames.forEach((name,i)=>{
+        const opt=document.createElement('option');
+        opt.value=i; opt.textContent=name;
+        sel.appendChild(opt);
+      });
+      document.getElementById('sheet-sel-area').style.display='block';
+      document.getElementById('import-msg').textContent='シートを選んで「読み込む」を押してください';
+    }catch(err){
+      document.getElementById('import-msg').textContent='ファイル読み込みエラー: '+err.message;
+    }
+    evt.target.value='';
+  };
+  reader.readAsBinaryString(file);
+};
+
+// ===== シートインポート =====
+window.importSheet = async function(){
+  if(!loadedWb) return;
+  const idx=parseInt(document.getElementById('sheet-sel').value);
+  const ws=loadedWb.Sheets[loadedWb.SheetNames[idx]];
+  const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false});
+  const toAdd=[];
+  let skipped=0;
+  rows.forEach(row=>{
+    if(!row||!row.length) return;
+    const num  =String(row[0]||'').trim();
+    const name =String(row[1]||'').trim();
+    const kana =String(row[2]||'').trim();
+    const grade=String(row[3]||'').trim();
+    if(!name) return;
+    if(members.find(m=>m.name===name)){ skipped++; return; }
+    toAdd.push({ num, name, kana, grade });
+  });
+  if(!toAdd.length){
+    document.getElementById('import-msg').textContent=`追加対象がありません（重複 ${skipped}名）`;
+    return;
+  }
+  setStatus('保存中...','loading');
+  try{
+    const batch=writeBatch(db);
+    toAdd.forEach(m=>{
+      const ref=doc(collection(db,'members'));
+      batch.set(ref,m);
+    });
+    await batch.commit();
+    document.getElementById('import-msg').textContent=
+      `✓ ${toAdd.length}名を追加しました`+(skipped?`　※重複${skipped}名スキップ`:'');
+    setStatus('同期済み ✓','ok');
+  }catch(e){
+    setStatus('保存エラー','err');
+    document.getElementById('import-msg').textContent='保存エラー: '+e.message;
+  }
+};
+
+// ===== 手動追加 =====
+window.showAddModal=function(){
+  ['m-num','m-name','m-kana','m-grade'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('modal').style.display='flex';
+  setTimeout(()=>document.getElementById('m-name').focus(),100);
+};
+window.hideModal=function(){ document.getElementById('modal').style.display='none'; };
+window.addManual=async function(){
+  const name=document.getElementById('m-name').value.trim();
+  if(!name){ alert('氏名を入力してください'); return; }
+  if(members.find(m=>m.name===name)){ alert('同じ名前が既に登録されています'); return; }
+  const num  =document.getElementById('m-num').value.trim();
+  const kana =document.getElementById('m-kana').value.trim();
+  const grade=document.getElementById('m-grade').value.trim();
+  setStatus('保存中...','loading');
+  try{
+    await setDoc(doc(collection(db,'members')),{num,name,kana,grade});
+    setStatus('同期済み ✓','ok');
+    hideModal();
+  }catch(e){
+    setStatus('保存エラー','err');
+    alert('保存に失敗しました: '+e.message);
+  }
+};
+
+// ===== メンバー削除 =====
+window._delMember=async function(id,name){
+  if(!confirm(`「${name}」を削除しますか？`)) return;
+  setStatus('削除中...','loading');
+  try{
+    await deleteDoc(doc(db,'members',id));
+    setStatus('同期済み ✓','ok');
+  }catch(e){
+    setStatus('削除エラー','err');
+  }
+};
+
+// ===== 全削除 =====
+window.clearAll=async function(){
+  if(!confirm('全メンバーと出席記録をすべて削除しますか？\nこの操作は元に戻せません。')) return;
+  setStatus('削除中...','loading');
+  try{
+    const batch=writeBatch(db);
+    const ms=await getDocs(collection(db,'members'));
+    ms.forEach(d=>batch.delete(d.ref));
+    const as=await getDocs(collection(db,'attendance'));
+    as.forEach(d=>batch.delete(d.ref));
+    await batch.commit();
+    setStatus('同期済み ✓','ok');
+  }catch(e){
+    setStatus('削除エラー','err');
+  }
+};
+
+// ===== 起動 =====
+const now=new Date();
+document.getElementById('today-lbl').textContent=`${now.getMonth()+1}月${now.getDate()}日`;
+currentEvent=guessToday();
+buildEvSel();
+
+// ローディング解除（Firestoreの初回スナップショットを待つ）
+setTimeout(()=>{
+  document.getElementById('loading-screen').style.display='none';
+  document.getElementById('main-app').style.display='block';
+},1500);
+
+</script>
+</body>
+</html>
