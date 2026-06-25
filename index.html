@@ -9,143 +9,118 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;background:#f5f4f0;min-height:100vh;font-size:14px;color:#1a1a18}
 .app{max-width:480px;margin:0 auto;padding:0 0 64px}
-
-/* ヘッダー */
 .hdr{background:#fff;border-bottom:1px solid #e0ddd5;padding:12px 16px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:10}
 .hdr h1{font-size:15px;font-weight:500;color:#1a1a18;flex:1}
-.hdr-grp{font-size:11px;color:#185fa5;background:#e6f1fb;padding:3px 8px;border-radius:6px;font-weight:400;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdr-grp{font-size:11px;color:#185fa5;background:#e6f1fb;padding:3px 8px;border-radius:6px;font-weight:400;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;transition:background .3s}
-.sync-dot.ok{background:#1d9e75}
-.sync-dot.err{background:#d85a30}
+.sync-dot.ok{background:#1d9e75}.sync-dot.err{background:#d85a30}
 .sync-dot.loading{background:#f0c040;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* タブ */
 .tabs{display:flex;background:#fff;border-bottom:1px solid #e0ddd5;position:sticky;top:49px;z-index:9}
-.tab{flex:1;height:44px;font-size:13px;font-weight:400;border:none;background:transparent;color:#888780;cursor:pointer;border-bottom:2px solid transparent;font-family:inherit}
+.tab{flex:1;height:44px;font-size:12px;font-weight:400;border:none;background:transparent;color:#888780;cursor:pointer;border-bottom:2px solid transparent;font-family:inherit}
 .tab.active{color:#1a1a18;border-bottom:2px solid #1a1a18;font-weight:500}
-
 .content{padding:12px 16px}
-
-/* 統計 */
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .stat{background:#fff;border-radius:10px;padding:12px 8px;text-align:center;border:1px solid #e0ddd5}
 .stat .num{font-size:24px;font-weight:500}
 .stat .lbl{font-size:12px;color:#888780;margin-top:2px;font-weight:400}
-.stat.s-present .num{color:#0f6e56}
-.stat.s-early .num{color:#993c1d}
-.stat.s-here .num{color:#185fa5}
-
-/* イベント選択 */
+.stat.s-present .num{color:#0f6e56}.stat.s-early .num{color:#993c1d}.stat.s-here .num{color:#185fa5}
 .ev-scroll{overflow-x:auto;display:flex;gap:6px;margin-bottom:12px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .ev-scroll::-webkit-scrollbar{display:none}
 .ev-btn{white-space:nowrap;padding:5px 10px;font-size:12px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#f1efe8;color:#5f5e5a;cursor:pointer;flex-shrink:0;font-family:inherit;line-height:1.4;text-align:center}
 .ev-btn.active{background:#185fa5;border-color:#185fa5;color:#fff;font-weight:500}
-
-/* 検索 */
 .search-row{display:flex;gap:8px;margin-bottom:10px}
-.search-row input{flex:1;height:40px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 12px;font-family:inherit}
-.search-row select{height:40px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
-
-/* 出席カード */
+.search-row input{flex:1;height:40px;font-size:13px;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 12px;font-family:inherit}
+.search-row select{height:40px;font-size:13px;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
 .person-list{display:flex;flex-direction:column;gap:6px}
 .pcard{background:#fff;border:1px solid #e0ddd5;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;border-left:3px solid #e0ddd5}
-.pcard.st-present{border-left-color:#1d9e75}
-.pcard.st-early{border-left-color:#d85a30;opacity:0.8}
-.pcard-num{font-size:12px;font-weight:400;color:#b4b2a9;width:28px;flex-shrink:0;text-align:right}
+.pcard.st-present{border-left-color:#1d9e75}.pcard.st-early{border-left-color:#d85a30;opacity:.8}
+.pcard-num{font-size:12px;color:#b4b2a9;width:28px;flex-shrink:0;text-align:right}
 .pcard-info{flex:1;min-width:0}
-.pcard-name{font-size:14px;font-weight:400;color:#1a1a18}
-.pcard-kana{font-size:11px;font-weight:400;color:#888780;margin-top:1px}
-.pcard-grade{font-size:11px;font-weight:400;color:#888780}
-.badge{font-size:11px;font-weight:400;padding:3px 8px;border-radius:6px;white-space:nowrap}
-.badge-none{background:#f1efe8;color:#888780}
-.badge-present{background:#e1f5ee;color:#0f6e56}
-.badge-early{background:#faece7;color:#993c1d}
+.pcard-name{font-size:14px;color:#1a1a18}.pcard-kana{font-size:11px;color:#888780;margin-top:1px}.pcard-grade{font-size:11px;color:#888780}
+.badge{font-size:11px;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.badge-none{background:#f1efe8;color:#888780}.badge-present{background:#e1f5ee;color:#0f6e56}.badge-early{background:#faece7;color:#993c1d}
 .act-btns{display:flex;gap:4px;flex-shrink:0}
-.act-btn{height:32px;padding:0 10px;font-size:12px;font-weight:400;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;cursor:pointer;white-space:nowrap;font-family:inherit}
-.act-btn:active{transform:scale(0.95)}
-.act-btn.ap{background:#e1f5ee;border-color:#5dcaa5;color:#0f6e56}
-.act-btn.ae{background:#faece7;border-color:#f0997b;color:#993c1d}
-.act-btn.ar{background:#f1efe8;color:#888780;border-color:#d3d1c7}
-
-.empty{text-align:center;padding:40px 16px;color:#888780;font-size:13px;font-weight:400;line-height:1.8}
-
-/* 個人記録 */
-.dot-legend{display:flex;gap:14px;margin-bottom:10px;font-size:12px;font-weight:400;color:#888780}
+.act-btn{height:32px;padding:0 10px;font-size:12px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;cursor:pointer;white-space:nowrap;font-family:inherit}
+.act-btn:active{transform:scale(.95)}.act-btn.ap{background:#e1f5ee;border-color:#5dcaa5;color:#0f6e56}
+.act-btn.ae{background:#faece7;border-color:#f0997b;color:#993c1d}.act-btn.ar{background:#f1efe8;color:#888780}
+.empty{text-align:center;padding:40px 16px;color:#888780;font-size:13px;line-height:1.8}
+.dot-legend{display:flex;gap:14px;margin-bottom:10px;font-size:12px;color:#888780}
 .dot-legend span{display:flex;align-items:center;gap:4px}
 .dot-samp{width:14px;height:14px;border-radius:3px;display:inline-block}
 .hcard{background:#fff;border:1px solid #e0ddd5;border-radius:10px;padding:12px;margin-bottom:8px}
 .hcard-name{font-size:13px;font-weight:500;color:#1a1a18;margin-bottom:2px}
-.hcard-sub{font-size:11px;font-weight:400;color:#888780;margin-bottom:8px}
+.hcard-sub{font-size:11px;color:#888780;margin-bottom:8px}
 .hdots{display:flex;flex-wrap:wrap;gap:3px}
-.hdot{width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:400;flex-shrink:0}
-.hdot.p{background:#e1f5ee;color:#0f6e56}
-.hdot.e{background:#faece7;color:#993c1d}
-.hdot.n{background:#f1efe8;color:#b4b2a9}
-
-/* 名簿タブ */
+.hdot{width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0}
+.hdot.p{background:#e1f5ee;color:#0f6e56}.hdot.e{background:#faece7;color:#993c1d}.hdot.n{background:#f1efe8;color:#b4b2a9}
 .sheet-row{display:flex;gap:8px;margin-bottom:10px;align-items:center}
-.sheet-row label{font-size:12px;font-weight:400;color:#5f5e5a;white-space:nowrap}
-.sheet-row select{flex:1;height:38px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
-.sheet-row button{height:38px;padding:0 14px;font-size:13px;font-weight:400;border:1px solid #185fa5;border-radius:8px;background:#185fa5;color:#fff;cursor:pointer;white-space:nowrap;font-family:inherit}
+.sheet-row label{font-size:12px;color:#5f5e5a;white-space:nowrap}
+.sheet-row select{flex:1;height:38px;font-size:13px;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
+.sheet-row button{height:38px;padding:0 14px;font-size:13px;border:1px solid #185fa5;border-radius:8px;background:#185fa5;color:#fff;cursor:pointer;white-space:nowrap;font-family:inherit}
 .import-area{border:2px dashed #d3d1c7;border-radius:10px;padding:18px;text-align:center;margin-bottom:10px;cursor:pointer;background:#fff}
 .import-area:active{border-color:#185fa5;background:#e6f1fb}
 .import-area .ic{font-size:32px;margin-bottom:6px}
-.import-area p{font-size:13px;font-weight:400;color:#5f5e5a}
-.import-area small{font-size:11px;font-weight:400;color:#888780}
+.import-area p{font-size:13px;color:#5f5e5a}.import-area small{font-size:11px;color:#888780}
 .btn-row{display:flex;gap:8px;margin-bottom:10px}
-.btn{height:38px;padding:0 14px;font-size:13px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;flex:1}
-.btn:active{transform:scale(0.97)}
-.btn.danger{color:#a32d2d;border-color:#f09595}
-.section-lbl{font-size:11px;font-weight:400;color:#888780;margin-bottom:6px;letter-spacing:.04em}
+.btn{height:38px;padding:0 14px;font-size:13px;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;flex:1}
+.btn:active{transform:scale(.97)}.btn.danger{color:#a32d2d;border-color:#f09595}.btn.primary{background:#185fa5;color:#fff;border-color:#185fa5}
+.section-lbl{font-size:11px;color:#888780;margin-bottom:6px;letter-spacing:.04em}
 .mcard{background:#fff;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.mcard-num{font-size:12px;font-weight:400;color:#b4b2a9;width:28px;text-align:right;flex-shrink:0}
-.mcard-info{flex:1;min-width:0}
-.mcard-name{font-size:14px;font-weight:400;color:#1a1a18}
-.mcard-sub{font-size:11px;font-weight:400;color:#888780;margin-top:1px}
-.del-btn{width:30px;height:30px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#888780;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;font-family:inherit}
+.mcard-num{font-size:12px;color:#b4b2a9;width:28px;text-align:right;flex-shrink:0}
+.mcard-info{flex:1;min-width:0}.mcard-name{font-size:14px;color:#1a1a18}.mcard-sub{font-size:11px;color:#888780;margin-top:1px}
+.del-btn{width:30px;height:30px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#888780;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .del-btn:active{background:#faece7;color:#993c1d}
-
-/* グループ管理タブ */
-.grp-card{background:#fff;border:1px solid #e0ddd5;border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+/* グループカード */
+.grp-card{background:#fff;border:1px solid #e0ddd5;border-radius:10px;padding:12px 14px;margin-bottom:8px}
 .grp-card.active-grp{border-color:#185fa5;background:#f0f6fd}
-.grp-card-info{flex:1;min-width:0}
-.grp-card-name{font-size:14px;font-weight:400;color:#1a1a18}
-.grp-card-meta{font-size:11px;font-weight:400;color:#888780;margin-top:2px}
-.grp-badge{font-size:10px;font-weight:400;padding:2px 7px;border-radius:5px;background:#e6f1fb;color:#185fa5;white-space:nowrap}
-.grp-btns{display:flex;gap:4px;flex-shrink:0}
-.grp-btn{height:30px;padding:0 10px;font-size:12px;font-weight:400;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;cursor:pointer;white-space:nowrap;font-family:inherit}
+.grp-card-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.grp-card-name{font-size:14px;color:#1a1a18;flex:1}
+.grp-badge{font-size:10px;padding:2px 7px;border-radius:5px;background:#e6f1fb;color:#185fa5;white-space:nowrap}
+.grp-card-meta{font-size:11px;color:#888780;margin-bottom:8px}
+.grp-card-sched{font-size:11px;color:#5f5e5a;background:#f5f4f0;border-radius:6px;padding:6px 8px;margin-bottom:8px;line-height:1.7}
+.grp-btns{display:flex;gap:6px}
+.grp-btn{height:30px;padding:0 10px;font-size:12px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;cursor:pointer;white-space:nowrap;font-family:inherit}
 .grp-btn.select{background:#e6f1fb;border-color:#85b7eb;color:#185fa5}
+.grp-btn.edit{background:#f1efe8;border-color:#d3d1c7;color:#5f5e5a}
 .grp-btn.del{background:#faece7;border-color:#f0997b;color:#993c1d}
-
+/* 日程設定UI */
+.sched-section{background:#f5f4f0;border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.sched-section h3{font-size:12px;font-weight:500;color:#5f5e5a;margin-bottom:8px}
+.date-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.date-row label{font-size:12px;color:#5f5e5a;white-space:nowrap;width:52px}
+.date-row input[type=date]{flex:1;height:36px;font-size:13px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
+.ev-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.ev-row{display:flex;gap:6px;align-items:center}
+.ev-row input[type=date]{width:130px;height:34px;font-size:12px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;padding:0 6px;font-family:inherit;flex-shrink:0}
+.ev-row input[type=text]{flex:1;height:34px;font-size:12px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;padding:0 8px;font-family:inherit}
+.ev-row select{width:80px;height:34px;font-size:12px;border:1px solid #d3d1c7;border-radius:7px;background:#fff;color:#1a1a18;padding:0 4px;font-family:inherit;flex-shrink:0}
+.ev-row .rm-btn{width:28px;height:28px;border:1px solid #f0997b;border-radius:6px;background:#faece7;color:#993c1d;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.add-ev-btn{height:30px;padding:0 12px;font-size:12px;border:1px dashed #d3d1c7;border-radius:7px;background:#fff;color:#888780;cursor:pointer;font-family:inherit}
 /* ステータスバー */
-.status-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0ddd5;padding:8px 16px;text-align:center;font-size:11px;font-weight:400;color:#888780}
-
+.status-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0ddd5;padding:8px 16px;text-align:center;font-size:11px;color:#888780}
 /* ローディング */
 .loading-screen{position:fixed;inset:0;background:#f5f4f0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:12px}
-.loading-screen p{font-size:14px;font-weight:400;color:#5f5e5a}
+.loading-screen p{font-size:14px;color:#5f5e5a}
 .spinner{width:32px;height:32px;border:3px solid #e0ddd5;border-top-color:#185fa5;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* モーダル共通 */
+/* モーダル */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:flex-end;justify-content:center}
-.modal{background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%;max-width:480px}
+.modal{background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
 .modal h2{font-size:15px;font-weight:500;margin-bottom:14px;color:#1a1a18}
-.modal input{width:100%;height:44px;font-size:14px;font-weight:400;border:1px solid #d3d1c7;border-radius:8px;padding:0 12px;margin-bottom:10px;font-family:inherit;color:#1a1a18}
-.modal input:last-of-type{margin-bottom:0}
-.modal-note{font-size:11px;font-weight:400;color:#888780;margin-bottom:12px;margin-top:4px;line-height:1.6}
+.modal-input{width:100%;height:44px;font-size:14px;border:1px solid #d3d1c7;border-radius:8px;padding:0 12px;margin-bottom:10px;font-family:inherit;color:#1a1a18}
+.modal-note{font-size:11px;color:#888780;margin-bottom:10px;line-height:1.6}
 .modal-btns{display:flex;gap:8px;margin-top:12px}
-.modal-btns button{flex:1;height:44px;border-radius:8px;border:1px solid #d3d1c7;font-size:14px;font-weight:400;cursor:pointer;font-family:inherit}
+.modal-btns button{flex:1;height:44px;border-radius:8px;border:1px solid #d3d1c7;font-size:14px;cursor:pointer;font-family:inherit}
 .modal-btns .ok{background:#185fa5;color:#fff;border-color:#185fa5}
 .modal-btns .cancel{background:#fff;color:#888780}
-.modal-err{font-size:12px;color:#993c1d;margin-top:6px;min-height:16px}
+.modal-err{font-size:12px;color:#993c1d;margin-top:4px;min-height:16px}
+.divider{height:1px;background:#e0ddd5;margin:12px 0}
 </style>
 </head>
 <body>
-
 <div class="loading-screen" id="loading-screen">
-  <div class="spinner"></div>
-  <p>接続中...</p>
+  <div class="spinner"></div><p>接続中...</p>
 </div>
 
 <div class="app" style="display:none" id="main-app">
@@ -154,7 +129,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;bac
     <span class="hdr-grp" id="hdr-grp">グループ未選択</span>
     <span class="sync-dot loading" id="sync-dot"></span>
   </div>
-
   <div class="tabs">
     <button class="tab active" onclick="switchTab('attend')">出席入力</button>
     <button class="tab" onclick="switchTab('history')">個人記録</button>
@@ -173,10 +147,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;bac
     <div class="search-row">
       <input id="search" placeholder="名前・ふりがなで検索…" oninput="renderList()">
       <select id="flt" onchange="renderList()">
-        <option value="">全員</option>
-        <option value="none">未記録</option>
-        <option value="present">出席</option>
-        <option value="early">早退</option>
+        <option value="">全員</option><option value="none">未記録</option>
+        <option value="present">出席</option><option value="early">早退</option>
       </select>
     </div>
     <div class="person-list" id="plist"></div>
@@ -194,9 +166,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;bac
 
   <!-- 名簿 -->
   <div class="content" id="tab-import" style="display:none">
-    <div id="no-grp-msg" style="display:none">
-      <div class="empty">「グループ」タブでグループを選択または作成してください</div>
-    </div>
+    <div id="no-grp-msg" style="display:none"><div class="empty">「グループ」タブでグループを選択してください</div></div>
     <div id="import-inner" style="display:none">
       <div class="import-area" onclick="document.getElementById('file-in').click()">
         <div class="ic">📊</div>
@@ -224,7 +194,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;bac
   <!-- グループ管理 -->
   <div class="content" id="tab-groups" style="display:none">
     <div class="btn-row" style="margin-bottom:14px">
-      <button class="btn" style="background:#185fa5;color:#fff;border-color:#185fa5" onclick="showNewGrpModal()">＋ 新しいグループを作成</button>
+      <button class="btn primary" onclick="showNewGrpModal()">＋ 新しいグループを作成</button>
     </div>
     <div class="section-lbl">グループ一覧</div>
     <div id="grp-list"></div>
@@ -237,10 +207,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;bac
 <div class="modal-bg" id="modal-add" style="display:none" onclick="if(event.target===this)hideModal('modal-add')">
   <div class="modal">
     <h2>メンバーを追加</h2>
-    <input id="m-num"   placeholder="番号（省略可）">
-    <input id="m-name"  placeholder="氏名（必須）">
-    <input id="m-kana"  placeholder="ふりがな（省略可）">
-    <input id="m-grade" placeholder="学年（省略可）">
+    <input class="modal-input" id="m-num" placeholder="番号（省略可）">
+    <input class="modal-input" id="m-name" placeholder="氏名（必須）">
+    <input class="modal-input" id="m-kana" placeholder="ふりがな（省略可）">
+    <input class="modal-input" id="m-grade" placeholder="学年（省略可）">
     <div class="modal-btns">
       <button class="cancel" onclick="hideModal('modal-add')">キャンセル</button>
       <button class="ok" onclick="addManual()">追加</button>
@@ -248,27 +218,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;bac
   </div>
 </div>
 
-<!-- 新規グループ作成モーダル -->
-<div class="modal-bg" id="modal-newgrp" style="display:none" onclick="if(event.target===this)hideModal('modal-newgrp')">
+<!-- グループ作成／編集モーダル -->
+<div class="modal-bg" id="modal-grp-edit" style="display:none" onclick="if(event.target===this)hideModal('modal-grp-edit')">
   <div class="modal">
-    <h2>新しいグループを作成</h2>
-    <input id="newgrp-pw" type="password" placeholder="管理者パスワード">
-    <input id="newgrp-name" placeholder="グループ名（例：2025年 Aグループ）">
-    <div class="modal-note">グループを作成すると、名簿・出欠記録が独立して管理されます。</div>
-    <div class="modal-err" id="newgrp-err"></div>
+    <h2 id="grp-edit-title">新しいグループを作成</h2>
+    <input class="modal-input" id="ge-pw" type="password" placeholder="管理者パスワード">
+    <input class="modal-input" id="ge-name" placeholder="グループ名（例：2025年 Aグループ）">
+    <div class="divider"></div>
+    <!-- 稽古期間 -->
+    <div class="sched-section">
+      <h3>📅 稽古期間</h3>
+      <div class="date-row">
+        <label>開始日</label>
+        <input type="date" id="ge-start">
+      </div>
+      <div class="date-row">
+        <label>終了日</label>
+        <input type="date" id="ge-end">
+      </div>
+    </div>
+    <!-- 特別イベント -->
+    <div class="sched-section">
+      <h3>🎪 特別イベント</h3>
+      <div class="ev-list" id="ge-ev-list"></div>
+      <button class="add-ev-btn" onclick="addEvRow()">＋ イベントを追加</button>
+    </div>
+    <div class="modal-note">イベントは日付順に自動で並びます。稽古期間は毎日自動で追加されます。</div>
+    <div class="modal-err" id="ge-err"></div>
     <div class="modal-btns">
-      <button class="cancel" onclick="hideModal('modal-newgrp')">キャンセル</button>
-      <button class="ok" onclick="createGroup()">作成</button>
+      <button class="cancel" onclick="hideModal('modal-grp-edit')">キャンセル</button>
+      <button class="ok" id="ge-ok-btn" onclick="saveGroup()">作成</button>
     </div>
   </div>
 </div>
 
-<!-- グループ削除確認モーダル -->
+<!-- グループ削除モーダル -->
 <div class="modal-bg" id="modal-delgrp" style="display:none" onclick="if(event.target===this)hideModal('modal-delgrp')">
   <div class="modal">
     <h2>グループを削除</h2>
     <p style="font-size:13px;color:#5f5e5a;margin-bottom:12px">「<span id="delgrp-name"></span>」を削除します。<br>名簿・出欠記録もすべて削除されます。</p>
-    <input id="delgrp-pw" type="password" placeholder="管理者パスワード">
+    <input class="modal-input" id="delgrp-pw" type="password" placeholder="管理者パスワード">
     <div class="modal-err" id="delgrp-err"></div>
     <div class="modal-btns">
       <button class="cancel" onclick="hideModal('modal-delgrp')">キャンセル</button>
@@ -277,151 +266,147 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;bac
   </div>
 </div>
 
-<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import {
   getFirestore, collection, doc,
-  onSnapshot, setDoc, deleteDoc, getDocs, writeBatch, addDoc
+  onSnapshot, setDoc, deleteDoc, getDocs, writeBatch, addDoc, updateDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const ADMIN_PW = 'ibarashrine1624';
-
 const firebaseConfig = {
-  apiKey: "AIzaSyAUOMbAuSVhrja7FadWqX6vjP-zoEaXJaQ",
-  authDomain: "natsu-matsuri-pjt.firebaseapp.com",
-  projectId: "natsu-matsuri-pjt",
-  storageBucket: "natsu-matsuri-pjt.firebasestorage.app",
-  messagingSenderId: "147743578543",
-  appId: "1:147743578543:web:0803a0e0a4340e25c7375a",
-  measurementId: "G-L50EZP9R6T"
+  apiKey:"AIzaSyAUOMbAuSVhrja7FadWqX6vjP-zoEaXJaQ",
+  authDomain:"natsu-matsuri-pjt.firebaseapp.com",
+  projectId:"natsu-matsuri-pjt",
+  storageBucket:"natsu-matsuri-pjt.firebasestorage.app",
+  messagingSenderId:"147743578543",
+  appId:"1:147743578543:web:0803a0e0a4340e25c7375a"
 };
-
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ===== イベント定義 =====
-const EVENTS = (() => {
-  const list = [];
-  const start = new Date(2025,6,8), end = new Date(2025,6,20);
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) {
-    const mm = d.getMonth()+1, dd = d.getDate();
-    list.push({ id:`k${mm}${String(dd).padStart(2,'0')}`, label:`7/${dd}`, sub:'稽古' });
-  }
-  list.push({ id:'c0721',  label:'7/21',  sub:'衣装渡し' });
-  list.push({ id:'p0722e', label:'7/22夕', sub:'本番' });
-  list.push({ id:'p0723d', label:'7/23昼', sub:'本番' });
-  list.push({ id:'p0723e', label:'7/23夕', sub:'本番' });
-  return list;
-})();
-
 // ===== 状態 =====
-let groups       = [];   // [{id, name, createdAt}]
-let currentGrpId = null;
-let members      = [];
-let attendance   = {};
-let currentEvent = null;
-let loadedWb     = null;
-
-let unsubMembers    = null;
-let unsubAttendance = null;
-let pendingDelGrpId = null;
+let groups=[], currentGrpId=null, currentGrpData=null;
+let members=[], attendance={}, currentEvent=null, loadedWb=null;
+let unsubMembers=null, unsubAttendance=null;
+let pendingDelGrpId=null, editingGrpId=null;
 
 // ===== ユーティリティ =====
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function setStatus(msg, type='ok'){
-  document.getElementById('status-bar').textContent = msg;
-  document.getElementById('sync-dot').className = 'sync-dot ' + type;
+function setStatus(msg,type='ok'){
+  document.getElementById('status-bar').textContent=msg;
+  document.getElementById('sync-dot').className='sync-dot '+type;
 }
 function hideModal(id){ document.getElementById(id).style.display='none'; }
 function showModal(id){ document.getElementById(id).style.display='flex'; }
 
-function guessToday(){
-  const t = new Date();
-  const key = `k${t.getMonth()+1}${String(t.getDate()).padStart(2,'0')}`;
-  return EVENTS.find(e=>e.id===key) || EVENTS[0];
+// ===== イベントリスト生成（グループデータから） =====
+function buildEvents(grpData){
+  const list=[];
+  if(!grpData) return list;
+  // 稽古期間
+  if(grpData.schedStart && grpData.schedEnd){
+    const s=new Date(grpData.schedStart+'T00:00:00');
+    const e=new Date(grpData.schedEnd+'T00:00:00');
+    for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1)){
+      const mm=d.getMonth()+1, dd=d.getDate();
+      const dateStr=`${d.getFullYear()}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
+      list.push({id:'k'+dateStr, label:`${mm}/${dd}`, sub:'稽古', date:dateStr});
+    }
+  }
+  // 特別イベント
+  if(grpData.events && Array.isArray(grpData.events)){
+    grpData.events.forEach((ev,i)=>{
+      if(!ev.date||!ev.name) return;
+      const d=new Date(ev.date+'T00:00:00');
+      const mm=d.getMonth()+1, dd=d.getDate();
+      const timeLabel=ev.time?` ${ev.time}`:'';
+      list.push({id:`e${i}_${ev.date}`, label:`${mm}/${dd}${timeLabel}`, sub:ev.name, date:ev.date});
+    });
+  }
+  // 日付順にソート
+  list.sort((a,b)=>a.date.localeCompare(b.date));
+  return list;
+}
+
+let EVENTS=[];
+
+function guessToday(evts){
+  const t=new Date();
+  const today=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+  return evts.find(e=>e.date===today)||evts[0]||null;
 }
 
 // ===== ソート =====
 function sortMembers(){
   function parseNum(num){
-    const s = String(num||'').trim();
-    const grp = s.startsWith('男') ? 0 : s.startsWith('女') ? 1 : 9;
-    const n = parseInt(s.replace(/[^0-9]/g,''), 10);
-    return { grp, n: isNaN(n) ? 99999 : n };
+    const s=String(num||'').trim();
+    const grp=s.startsWith('男')?0:s.startsWith('女')?1:9;
+    const n=parseInt(s.replace(/[^0-9]/g,''),10);
+    return {grp, n:isNaN(n)?99999:n};
   }
   members.sort((a,b)=>{
-    const pa=parseNum(a.num), pb=parseNum(b.num);
+    const pa=parseNum(a.num),pb=parseNum(b.num);
     if(pa.grp!==pb.grp) return pa.grp-pb.grp;
-    if(pa.n!==pb.n)     return pa.n-pb.n;
+    if(pa.n!==pb.n) return pa.n-pb.n;
     return (a.name||'').localeCompare(b.name||'','ja');
   });
 }
 
 // ===== グループ購読 =====
-onSnapshot(collection(db,'groups'), snap=>{
+onSnapshot(collection(db,'groups'),snap=>{
   groups=[];
   snap.forEach(d=>groups.push({id:d.id,...d.data()}));
   groups.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  if(currentGrpId){
+    currentGrpData=groups.find(g=>g.id===currentGrpId)||null;
+    EVENTS=buildEvents(currentGrpData);
+    if(!currentEvent||!EVENTS.find(e=>e.id===currentEvent.id)){
+      currentEvent=guessToday(EVENTS);
+    }
+    buildEvSel();
+    updateStats();
+  }
   renderGroups();
-  // 現在選択中のグループが消えていたらリセット
-  if(currentGrpId && !groups.find(g=>g.id===currentGrpId)){
-    currentGrpId=null;
+  if(currentGrpId&&!groups.find(g=>g.id===currentGrpId)){
     switchGroup(null);
   }
   setStatus('同期済み ✓','ok');
-}, err=>{ setStatus('接続エラー','err'); });
+},err=>{setStatus('接続エラー','err');});
 
 // ===== グループ切り替え =====
 function switchGroup(grpId){
-  // 既存の購読を解除
-  if(unsubMembers)    { unsubMembers();    unsubMembers=null; }
-  if(unsubAttendance) { unsubAttendance(); unsubAttendance=null; }
-
-  currentGrpId = grpId;
-  members=[];
-  attendance={};
-
-  const grp = groups.find(g=>g.id===grpId);
-  document.getElementById('hdr-grp').textContent = grp ? grp.name : 'グループ未選択';
-
-  updateImportTab();
-  renderGroups();
-  updateStats();
-  renderList();
+  if(unsubMembers){unsubMembers();unsubMembers=null;}
+  if(unsubAttendance){unsubAttendance();unsubAttendance=null;}
+  currentGrpId=grpId;
+  currentGrpData=groups.find(g=>g.id===grpId)||null;
+  members=[];attendance={};
+  EVENTS=buildEvents(currentGrpData);
+  currentEvent=guessToday(EVENTS);
+  document.getElementById('hdr-grp').textContent=currentGrpData?currentGrpData.name:'グループ未選択';
+  updateImportTab();renderGroups();buildEvSel();updateStats();renderList();
   if(document.getElementById('tab-history').style.display!=='none') renderHistory();
-
   if(!grpId) return;
-
   setStatus('読み込み中...','loading');
-
-  // members購読
-  unsubMembers = onSnapshot(collection(db,'groups',grpId,'members'), snap=>{
+  unsubMembers=onSnapshot(collection(db,'groups',grpId,'members'),snap=>{
     members=[];
     snap.forEach(d=>members.push({id:d.id,...d.data()}));
-    sortMembers();
-    renderList();
-    renderMembers();
+    sortMembers();renderList();renderMembers();
     if(document.getElementById('tab-history').style.display!=='none') renderHistory();
     setStatus('同期済み ✓','ok');
-  }, err=>setStatus('接続エラー','err'));
-
-  // attendance購読
-  unsubAttendance = onSnapshot(collection(db,'groups',grpId,'attendance'), snap=>{
+  },err=>setStatus('接続エラー','err'));
+  unsubAttendance=onSnapshot(collection(db,'groups',grpId,'attendance'),snap=>{
     attendance={};
-    snap.forEach(d=>{ attendance[d.id]=d.data(); });
-    updateStats();
-    renderList();
+    snap.forEach(d=>{attendance[d.id]=d.data();});
+    updateStats();renderList();
     if(document.getElementById('tab-history').style.display!=='none') renderHistory();
     setStatus('同期済み ✓','ok');
-  }, err=>setStatus('接続エラー','err'));
+  },err=>setStatus('接続エラー','err'));
 }
 
 function updateImportTab(){
-  const noGrp = document.getElementById('no-grp-msg');
-  const inner = document.getElementById('import-inner');
-  if(currentGrpId){ noGrp.style.display='none'; inner.style.display='block'; }
-  else             { noGrp.style.display='block'; inner.style.display='none'; }
+  document.getElementById('no-grp-msg').style.display=currentGrpId?'none':'block';
+  document.getElementById('import-inner').style.display=currentGrpId?'block':'none';
 }
 
 // ===== グループ一覧描画 =====
@@ -433,49 +418,124 @@ function renderGroups(){
   }
   cont.innerHTML='';
   groups.forEach(g=>{
-    const isActive = g.id===currentGrpId;
+    const isActive=g.id===currentGrpId;
     const div=document.createElement('div');
     div.className='grp-card'+(isActive?' active-grp':'');
+    // 日程サマリー
+    let schedTxt='日程未設定';
+    if(g.schedStart&&g.schedEnd){
+      const s=new Date(g.schedStart+'T00:00:00'),e=new Date(g.schedEnd+'T00:00:00');
+      schedTxt=`稽古：${s.getMonth()+1}/${s.getDate()} 〜 ${e.getMonth()+1}/${e.getDate()}`;
+    }
+    if(g.events&&g.events.length){
+      schedTxt+=`　特別：${g.events.length}件`;
+    }
     div.innerHTML=`
-      <div class="grp-card-info">
+      <div class="grp-card-top">
         <div class="grp-card-name">${esc(g.name)}</div>
-        <div class="grp-card-meta">作成日: ${g.createdAt ? new Date(g.createdAt).toLocaleDateString('ja-JP') : '—'}</div>
+        ${isActive?'<span class="grp-badge">使用中</span>':''}
       </div>
-      ${isActive?'<span class="grp-badge">使用中</span>':''}
+      <div class="grp-card-meta">作成日: ${g.createdAt?new Date(g.createdAt).toLocaleDateString('ja-JP'):'—'}</div>
+      <div class="grp-card-sched">📅 ${esc(schedTxt)}</div>
       <div class="grp-btns">
         ${!isActive?`<button class="grp-btn select" onclick="window._selectGrp('${g.id}')">選択</button>`:''}
+        <button class="grp-btn edit" onclick="window._editGrp('${g.id}')">日程編集</button>
         <button class="grp-btn del" onclick="window._showDelGrp('${g.id}','${esc(g.name)}')">削除</button>
       </div>`;
     cont.appendChild(div);
   });
 }
 
-// ===== グループ作成 =====
+// ===== イベント行UI =====
+function addEvRow(date='',name='',time=''){
+  const row=document.createElement('div');
+  row.className='ev-row';
+  row.innerHTML=`
+    <input type="date" value="${date}" placeholder="日付">
+    <input type="text" value="${esc(name)}" placeholder="イベント名（例：衣装渡し）">
+    <select>
+      <option value="" ${!time?'selected':''}>時間なし</option>
+      <option value="朝" ${time==='朝'?'selected':''}>朝</option>
+      <option value="昼" ${time==='昼'?'selected':''}>昼</option>
+      <option value="夕" ${time==='夕'?'selected':''}>夕</option>
+      <option value="夜" ${time==='夜'?'selected':''}>夜</option>
+    </select>
+    <button class="rm-btn" onclick="this.closest('.ev-row').remove()">×</button>`;
+  document.getElementById('ge-ev-list').appendChild(row);
+}
+window.addEvRow=addEvRow;
+
+// ===== グループ作成モーダル =====
 window.showNewGrpModal=function(){
-  document.getElementById('newgrp-pw').value='';
-  document.getElementById('newgrp-name').value='';
-  document.getElementById('newgrp-err').textContent='';
-  showModal('modal-newgrp');
-  setTimeout(()=>document.getElementById('newgrp-pw').focus(),100);
-};
-window.createGroup=async function(){
-  const pw   = document.getElementById('newgrp-pw').value;
-  const name = document.getElementById('newgrp-name').value.trim();
-  const err  = document.getElementById('newgrp-err');
-  if(pw!==ADMIN_PW){ err.textContent='パスワードが違います'; return; }
-  if(!name){ err.textContent='グループ名を入力してください'; return; }
-  err.textContent='';
-  setStatus('作成中...','loading');
-  try{
-    const ref = await addDoc(collection(db,'groups'),{ name, createdAt: Date.now() });
-    hideModal('modal-newgrp');
-    switchGroup(ref.id);
-    setStatus('同期済み ✓','ok');
-  }catch(e){ err.textContent='作成エラー: '+e.message; setStatus('エラー','err'); }
+  editingGrpId=null;
+  document.getElementById('grp-edit-title').textContent='新しいグループを作成';
+  document.getElementById('ge-ok-btn').textContent='作成';
+  document.getElementById('ge-pw').value='';
+  document.getElementById('ge-name').value='';
+  document.getElementById('ge-start').value='';
+  document.getElementById('ge-end').value='';
+  document.getElementById('ge-ev-list').innerHTML='';
+  document.getElementById('ge-err').textContent='';
+  showModal('modal-grp-edit');
+  setTimeout(()=>document.getElementById('ge-pw').focus(),100);
 };
 
-// ===== グループ選択 =====
-window._selectGrp=function(id){ switchGroup(id); };
+// ===== グループ編集モーダル =====
+window._editGrp=function(id){
+  const g=groups.find(x=>x.id===id);
+  if(!g) return;
+  editingGrpId=id;
+  document.getElementById('grp-edit-title').textContent='日程を編集';
+  document.getElementById('ge-ok-btn').textContent='保存';
+  document.getElementById('ge-pw').value='';
+  document.getElementById('ge-name').value=g.name||'';
+  document.getElementById('ge-start').value=g.schedStart||'';
+  document.getElementById('ge-end').value=g.schedEnd||'';
+  document.getElementById('ge-ev-list').innerHTML='';
+  (g.events||[]).forEach(ev=>addEvRow(ev.date,ev.name,ev.time||''));
+  document.getElementById('ge-err').textContent='';
+  showModal('modal-grp-edit');
+  setTimeout(()=>document.getElementById('ge-pw').focus(),100);
+};
+
+// ===== グループ保存（作成／編集共通） =====
+window.saveGroup=async function(){
+  const pw=document.getElementById('ge-pw').value;
+  const name=document.getElementById('ge-name').value.trim();
+  const start=document.getElementById('ge-start').value;
+  const end=document.getElementById('ge-end').value;
+  const err=document.getElementById('ge-err');
+  if(pw!==ADMIN_PW){err.textContent='パスワードが違います';return;}
+  if(!name){err.textContent='グループ名を入力してください';return;}
+  if(start&&end&&start>end){err.textContent='終了日は開始日より後にしてください';return;}
+  err.textContent='';
+  // 特別イベント収集
+  const evRows=document.querySelectorAll('#ge-ev-list .ev-row');
+  const events=[];
+  evRows.forEach(row=>{
+    const inputs=row.querySelectorAll('input');
+    const sel=row.querySelector('select');
+    const d=inputs[0].value, n=inputs[1].value.trim(), t=sel.value;
+    if(d&&n) events.push({date:d,name:n,time:t});
+  });
+  const data={name,schedStart:start,schedEnd:end,events};
+  setStatus('保存中...','loading');
+  try{
+    if(editingGrpId){
+      await updateDoc(doc(db,'groups',editingGrpId),data);
+      hideModal('modal-grp-edit');
+      setStatus('同期済み ✓','ok');
+    } else {
+      data.createdAt=Date.now();
+      const ref=await addDoc(collection(db,'groups'),data);
+      hideModal('modal-grp-edit');
+      switchGroup(ref.id);
+      setStatus('同期済み ✓','ok');
+    }
+  }catch(e){err.textContent='保存エラー: '+e.message;setStatus('エラー','err');}
+};
+
+window._selectGrp=function(id){switchGroup(id);};
 
 // ===== グループ削除 =====
 window._showDelGrp=function(id,name){
@@ -487,28 +547,24 @@ window._showDelGrp=function(id,name){
   setTimeout(()=>document.getElementById('delgrp-pw').focus(),100);
 };
 window.deleteGroup=async function(){
-  const pw  = document.getElementById('delgrp-pw').value;
-  const err = document.getElementById('delgrp-err');
-  if(pw!==ADMIN_PW){ err.textContent='パスワードが違います'; return; }
-  if(!pendingDelGrpId){ hideModal('modal-delgrp'); return; }
-  err.textContent='';
+  const pw=document.getElementById('delgrp-pw').value;
+  const err=document.getElementById('delgrp-err');
+  if(pw!==ADMIN_PW){err.textContent='パスワードが違います';return;}
+  if(!pendingDelGrpId){hideModal('modal-delgrp');return;}
   setStatus('削除中...','loading');
   try{
     const gid=pendingDelGrpId;
     const batch=writeBatch(db);
-    // members削除
     const ms=await getDocs(collection(db,'groups',gid,'members'));
     ms.forEach(d=>batch.delete(d.ref));
-    // attendance削除
     const as=await getDocs(collection(db,'groups',gid,'attendance'));
     as.forEach(d=>batch.delete(d.ref));
-    // グループ本体削除
     batch.delete(doc(db,'groups',gid));
     await batch.commit();
     if(currentGrpId===gid) switchGroup(null);
     hideModal('modal-delgrp');
     setStatus('同期済み ✓','ok');
-  }catch(e){ err.textContent='削除エラー: '+e.message; setStatus('エラー','err'); }
+  }catch(e){err.textContent='削除エラー: '+e.message;setStatus('エラー','err');}
 };
 
 // ===== タブ切り替え =====
@@ -520,48 +576,47 @@ window.switchTab=function(t){
     b.classList.toggle('active',['attend','history','import','groups'][i]===t);
   });
   if(t==='history') renderHistory();
-  if(t==='import')  { updateImportTab(); renderMembers(); }
-  if(t==='groups')  renderGroups();
+  if(t==='import'){updateImportTab();renderMembers();}
+  if(t==='groups') renderGroups();
 };
 
-// ===== イベント選択 =====
+// ===== イベントボタン =====
 function buildEvSel(){
   const c=document.getElementById('ev-sel');
   c.innerHTML='';
+  if(!EVENTS.length){
+    c.innerHTML='<div style="font-size:12px;color:#888780;padding:4px 0">グループを選択してください</div>';
+    return;
+  }
   EVENTS.forEach(ev=>{
     const b=document.createElement('button');
     b.className='ev-btn'+(currentEvent&&currentEvent.id===ev.id?' active':'');
     b.innerHTML=`<div>${ev.label}</div><div style="font-size:10px;opacity:.75">${ev.sub}</div>`;
-    b.onclick=()=>{ currentEvent=ev; buildEvSel(); updateStats(); renderList(); };
+    b.onclick=()=>{currentEvent=ev;buildEvSel();updateStats();renderList();};
     c.appendChild(b);
   });
 }
 
 // ===== 出席操作 =====
-function getStatus(memberId){ return (attendance[currentEvent?.id]||{})[memberId]||null; }
-
+function getStatus(memberId){return(attendance[currentEvent?.id]||{})[memberId]||null;}
 async function setAttendance(memberId,status){
   if(!currentEvent||!currentGrpId) return;
   setStatus('保存中...','loading');
   try{
     const ref=doc(db,'groups',currentGrpId,'attendance',currentEvent.id);
     const cur=attendance[currentEvent.id]||{};
-    if(status===null){
-      const updated={...cur}; delete updated[memberId];
-      await setDoc(ref,updated);
-    } else {
-      await setDoc(ref,{...cur,[memberId]:status});
-    }
+    if(status===null){const u={...cur};delete u[memberId];await setDoc(ref,u);}
+    else await setDoc(ref,{...cur,[memberId]:status});
     setStatus('同期済み ✓','ok');
-  }catch(e){ setStatus('保存エラー','err'); alert('保存に失敗しました: '+e.message); }
+  }catch(e){setStatus('保存エラー','err');alert('保存に失敗しました: '+e.message);}
 }
 window._setAtt=setAttendance;
 
 function updateStats(){
-  if(!currentEvent){ ['s-p','s-e','s-h'].forEach(x=>document.getElementById(x).textContent='0'); return; }
+  if(!currentEvent){['s-p','s-e','s-h'].forEach(x=>document.getElementById(x).textContent='0');return;}
   const rec=attendance[currentEvent.id]||{};
   let p=0,e=0;
-  Object.values(rec).forEach(v=>{ if(v==='present')p++; if(v==='early')e++; });
+  Object.values(rec).forEach(v=>{if(v==='present')p++;if(v==='early')e++;});
   document.getElementById('s-p').textContent=p;
   document.getElementById('s-e').textContent=e;
   document.getElementById('s-h').textContent=p-e;
@@ -572,9 +627,9 @@ function renderList(){
   const q=document.getElementById('search').value.trim().toLowerCase();
   const f=document.getElementById('flt').value;
   const cont=document.getElementById('plist');
-  if(!currentGrpId){ cont.innerHTML='<div class="empty">「グループ」タブでグループを選択してください</div>'; return; }
-  if(!members.length){ cont.innerHTML='<div class="empty">📋<br>名簿タブからメンバーを登録してください</div>'; return; }
-  if(!currentEvent){ cont.innerHTML='<div class="empty">上のボタンでイベントを選んでください</div>'; return; }
+  if(!currentGrpId){cont.innerHTML='<div class="empty">「グループ」タブでグループを選択してください</div>';return;}
+  if(!members.length){cont.innerHTML='<div class="empty">📋<br>名簿タブからメンバーを登録してください</div>';return;}
+  if(!currentEvent){cont.innerHTML='<div class="empty">上のボタンでイベントを選んでください</div>';return;}
   const list=members.filter(m=>{
     if(q&&!m.name.toLowerCase().includes(q)&&!(m.kana||'').toLowerCase().includes(q)&&!(m.num||'').includes(q)) return false;
     const s=getStatus(m.id);
@@ -583,15 +638,15 @@ function renderList(){
     if(f==='early'&&s!=='early') return false;
     return true;
   });
-  if(!list.length){ cont.innerHTML='<div class="empty">該当者なし</div>'; return; }
+  if(!list.length){cont.innerHTML='<div class="empty">該当者なし</div>';return;}
   cont.innerHTML='';
   list.forEach(m=>{
     const s=getStatus(m.id);
     const div=document.createElement('div');
     div.className='pcard'+(s?' st-'+s:'');
     const badge=s==='present'?'<span class="badge badge-present">出席</span>'
-               :s==='early' ?'<span class="badge badge-early">早退</span>'
-                             :'<span class="badge badge-none">未</span>';
+               :s==='early'?'<span class="badge badge-early">早退</span>'
+               :'<span class="badge badge-none">未</span>';
     const cancelBtn=s?`<button class="act-btn ar" onclick="window._setAtt('${m.id}',null)">取消</button>`:'';
     div.innerHTML=`
       <div class="pcard-num">${esc(m.num)}</div>
@@ -613,7 +668,7 @@ function renderList(){
 // ===== 個人記録 =====
 function renderHistory(){
   const cont=document.getElementById('hlist');
-  if(!currentGrpId||!members.length){ cont.innerHTML='<div class="empty">メンバーがいません</div>'; return; }
+  if(!currentGrpId||!members.length){cont.innerHTML='<div class="empty">メンバーがいません</div>';return;}
   cont.innerHTML='';
   members.forEach(m=>{
     const div=document.createElement('div');
@@ -638,7 +693,7 @@ function renderHistory(){
 function renderMembers(){
   document.getElementById('mcnt').textContent=members.length;
   const cont=document.getElementById('mlist');
-  if(!members.length){ cont.innerHTML='<div class="empty" style="padding:20px 0">まだ登録がありません</div>'; return; }
+  if(!members.length){cont.innerHTML='<div class="empty" style="padding:20px 0">まだ登録がありません</div>';return;}
   cont.innerHTML='';
   members.forEach(m=>{
     const div=document.createElement('div');
@@ -655,10 +710,9 @@ function renderMembers(){
   });
 }
 
-// ===== Excelファイル選択 =====
+// ===== Excelインポート =====
 window.onFileChosen=function(evt){
-  const file=evt.target.files[0];
-  if(!file) return;
+  const file=evt.target.files[0];if(!file) return;
   const reader=new FileReader();
   reader.onload=e=>{
     try{
@@ -667,14 +721,11 @@ window.onFileChosen=function(evt){
       sel.innerHTML='';
       loadedWb.SheetNames.forEach((name,i)=>{
         const opt=document.createElement('option');
-        opt.value=i; opt.textContent=name;
-        sel.appendChild(opt);
+        opt.value=i;opt.textContent=name;sel.appendChild(opt);
       });
       document.getElementById('sheet-sel-area').style.display='block';
       document.getElementById('import-msg').textContent='シートを選んで「読み込む」を押してください';
-    }catch(err){
-      document.getElementById('import-msg').textContent='ファイル読み込みエラー: '+err.message;
-    }
+    }catch(err){document.getElementById('import-msg').textContent='ファイル読み込みエラー: '+err.message;}
     evt.target.value='';
   };
   reader.readAsBinaryString(file);
@@ -685,37 +736,27 @@ window.importSheet=async function(){
   const idx=parseInt(document.getElementById('sheet-sel').value);
   const ws=loadedWb.Sheets[loadedWb.SheetNames[idx]];
   const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false});
-  const toAdd=[];
-  let skipped=0;
+  const toAdd=[];let skipped=0;
   rows.forEach(row=>{
     if(!row||!row.length) return;
-    const num  =String(row[0]||'').trim();
-    const name =String(row[1]||'').trim();
-    const kana =String(row[2]||'').trim();
-    const grade=String(row[3]||'').trim();
+    const num=String(row[0]||'').trim(),name=String(row[1]||'').trim();
+    const kana=String(row[2]||'').trim(),grade=String(row[3]||'').trim();
     if(!name) return;
-    if(members.find(m=>m.name===name)){ skipped++; return; }
+    if(members.find(m=>m.name===name)){skipped++;return;}
     toAdd.push({num,name,kana,grade});
   });
   if(!toAdd.length){
-    document.getElementById('import-msg').textContent=`追加対象がありません（重複 ${skipped}名）`;
-    return;
+    document.getElementById('import-msg').textContent=`追加対象がありません（重複 ${skipped}名）`;return;
   }
   setStatus('保存中...','loading');
   try{
     const batch=writeBatch(db);
-    toAdd.forEach(m=>{
-      const ref=doc(collection(db,'groups',currentGrpId,'members'));
-      batch.set(ref,m);
-    });
+    toAdd.forEach(m=>{batch.set(doc(collection(db,'groups',currentGrpId,'members')),m);});
     await batch.commit();
     document.getElementById('import-msg').textContent=
       `✓ ${toAdd.length}名を追加しました`+(skipped?`　※重複${skipped}名スキップ`:'');
     setStatus('同期済み ✓','ok');
-  }catch(e){
-    setStatus('保存エラー','err');
-    document.getElementById('import-msg').textContent='保存エラー: '+e.message;
-  }
+  }catch(e){setStatus('保存エラー','err');document.getElementById('import-msg').textContent='保存エラー: '+e.message;}
 };
 
 // ===== 手動追加 =====
@@ -726,30 +767,25 @@ window.showAddModal=function(){
 };
 window.addManual=async function(){
   const name=document.getElementById('m-name').value.trim();
-  if(!name){ alert('氏名を入力してください'); return; }
-  if(members.find(m=>m.name===name)){ alert('同じ名前が既に登録されています'); return; }
-  const num  =document.getElementById('m-num').value.trim();
-  const kana =document.getElementById('m-kana').value.trim();
+  if(!name){alert('氏名を入力してください');return;}
+  if(members.find(m=>m.name===name)){alert('同じ名前が既に登録されています');return;}
+  const num=document.getElementById('m-num').value.trim();
+  const kana=document.getElementById('m-kana').value.trim();
   const grade=document.getElementById('m-grade').value.trim();
   setStatus('保存中...','loading');
   try{
     await addDoc(collection(db,'groups',currentGrpId,'members'),{num,name,kana,grade});
-    setStatus('同期済み ✓','ok');
-    hideModal('modal-add');
-  }catch(e){ setStatus('保存エラー','err'); alert('保存に失敗しました: '+e.message); }
+    setStatus('同期済み ✓','ok');hideModal('modal-add');
+  }catch(e){setStatus('保存エラー','err');alert('保存に失敗しました: '+e.message);}
 };
 
-// ===== メンバー削除 =====
 window._delMember=async function(id,name){
   if(!confirm(`「${name}」を削除しますか？`)) return;
   setStatus('削除中...','loading');
-  try{
-    await deleteDoc(doc(db,'groups',currentGrpId,'members',id));
-    setStatus('同期済み ✓','ok');
-  }catch(e){ setStatus('削除エラー','err'); }
+  try{await deleteDoc(doc(db,'groups',currentGrpId,'members',id));setStatus('同期済み ✓','ok');}
+  catch(e){setStatus('削除エラー','err');}
 };
 
-// ===== 名簿全削除 =====
 window.clearMembers=async function(){
   if(!currentGrpId) return;
   if(!confirm('この グループの名簿をすべて削除しますか？\n出欠記録も消えます。')) return;
@@ -760,13 +796,11 @@ window.clearMembers=async function(){
     ms.forEach(d=>batch.delete(d.ref));
     const as=await getDocs(collection(db,'groups',currentGrpId,'attendance'));
     as.forEach(d=>batch.delete(d.ref));
-    await batch.commit();
-    setStatus('同期済み ✓','ok');
-  }catch(e){ setStatus('削除エラー','err'); }
+    await batch.commit();setStatus('同期済み ✓','ok');
+  }catch(e){setStatus('削除エラー','err');}
 };
 
 // ===== 起動 =====
-currentEvent=guessToday();
 buildEvSel();
 setTimeout(()=>{
   document.getElementById('loading-screen').style.display='none';
